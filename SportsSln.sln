@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService", "PaymentSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShippingService", "ShippingService\ShippingService.csproj", "{1EB77537-6712-4920-AEC1-2982EE3793D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{1EB77537-6712-4920-AEC1-2982EE3793D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EB77537-6712-4920-AEC1-2982EE3793D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EB77537-6712-4920-AEC1-2982EE3793D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{AE3D789F-45E1-4788-81CE-F991C78FB6C2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{0912489F-FACF-4417-AF0B-31A2519F2F82} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{1EB77537-6712-4920-AEC1-2982EE3793D5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336} = {EA0E10E9-5F5E-4741-A98A-45EF27F71152}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D43E9001-2FC5-4D3A-930E-8BEA1EDB742D}
