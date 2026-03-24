@@ -21,22 +21,24 @@ namespace RabbitMQ
 			_logger = logger;
 		}
 
-		public Task Publish<T>(T message, string? routingKey = null) where T : class
+		public async Task Publish<T>(T message, string? routingKey = null) where T : class
 		{
-			using var channel = _connection.CreateModel();
-			channel.ExchangeDeclare(exchange: "order_exchange", type: ExchangeType.Topic, durable: true);
+			var channel = _connection.CreateChannelAsync();
+
+			await channel.ExchangeDeclareAsync(
+				exchange: "order_exchange",
+				type: ExchangeType.Topic,
+				durable: true);
 
 			var messageName = routingKey ?? typeof(T).Name;
 			var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
 
-			channel.BasicPublish(
+			await channel.BasicPublishAsync(
 				exchange: "order_exchange",
 				routingKey: messageName,
-				basicProperties: null,
 				body: body);
 
 			_logger.LogInformation("Published {MessageName} to RabbitMQ", messageName);
-			return Task.CompletedTask;
 		}
 	}
 }
