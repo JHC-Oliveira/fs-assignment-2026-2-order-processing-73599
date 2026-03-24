@@ -7,6 +7,43 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportsStore", "SportsStore\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SportsStore.Tests", "SportsStore.Tests\SportsStore.Tests.csproj", "{41A1910B-4B6B-4AD9-90E9-7A5902E4297A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{EA0E10E9-5F5E-4741-A98A-45EF27F71152}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagementApi", "OrderManagementApi\OrderManagementApi.csproj", "{ACCFA3F0-BC90-400F-BAE6-371AC65CB772}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageContracts", "MessageContracts\MessageContracts.csproj", "{4A6042F5-A443-44DE-A229-37612D5E51B3}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "admin-dashboard", "admin-dashboard\", "{DAA75C7E-8200-348F-E4CD-417C5A438CFA}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_57250"
+		Debug.AspNetCompiler.PhysicalPath = "admin-dashboard\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_57250\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_57250"
+		Release.AspNetCompiler.PhysicalPath = "admin-dashboard\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_57250\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "57250"
+		SlnRelativePath = "admin-dashboard\"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryService", "InventoryService\InventoryService.csproj", "{AE3D789F-45E1-4788-81CE-F991C78FB6C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentService", "PaymentService\PaymentService.csproj", "{0912489F-FACF-4417-AF0B-31A2519F2F82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShippingService", "ShippingService\ShippingService.csproj", "{1EB77537-6712-4920-AEC1-2982EE3793D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitMQ", "RabbitMQ\RabbitMQ.csproj", "{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +58,45 @@ Global
 		{41A1910B-4B6B-4AD9-90E9-7A5902E4297A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41A1910B-4B6B-4AD9-90E9-7A5902E4297A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41A1910B-4B6B-4AD9-90E9-7A5902E4297A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACCFA3F0-BC90-400F-BAE6-371AC65CB772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACCFA3F0-BC90-400F-BAE6-371AC65CB772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACCFA3F0-BC90-400F-BAE6-371AC65CB772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACCFA3F0-BC90-400F-BAE6-371AC65CB772}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A6042F5-A443-44DE-A229-37612D5E51B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A6042F5-A443-44DE-A229-37612D5E51B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A6042F5-A443-44DE-A229-37612D5E51B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A6042F5-A443-44DE-A229-37612D5E51B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAA75C7E-8200-348F-E4CD-417C5A438CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAA75C7E-8200-348F-E4CD-417C5A438CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAA75C7E-8200-348F-E4CD-417C5A438CFA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAA75C7E-8200-348F-E4CD-417C5A438CFA}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{AE3D789F-45E1-4788-81CE-F991C78FB6C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE3D789F-45E1-4788-81CE-F991C78FB6C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE3D789F-45E1-4788-81CE-F991C78FB6C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE3D789F-45E1-4788-81CE-F991C78FB6C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0912489F-FACF-4417-AF0B-31A2519F2F82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0912489F-FACF-4417-AF0B-31A2519F2F82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0912489F-FACF-4417-AF0B-31A2519F2F82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0912489F-FACF-4417-AF0B-31A2519F2F82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EB77537-6712-4920-AEC1-2982EE3793D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB77537-6712-4920-AEC1-2982EE3793D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB77537-6712-4920-AEC1-2982EE3793D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB77537-6712-4920-AEC1-2982EE3793D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ACCFA3F0-BC90-400F-BAE6-371AC65CB772} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{4A6042F5-A443-44DE-A229-37612D5E51B3} = {EA0E10E9-5F5E-4741-A98A-45EF27F71152}
+		{AE3D789F-45E1-4788-81CE-F991C78FB6C2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{0912489F-FACF-4417-AF0B-31A2519F2F82} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1EB77537-6712-4920-AEC1-2982EE3793D5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{5AF34A41-4D7C-4A70-ADFB-E3A37B4C0336} = {EA0E10E9-5F5E-4741-A98A-45EF27F71152}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D43E9001-2FC5-4D3A-930E-8BEA1EDB742D}
