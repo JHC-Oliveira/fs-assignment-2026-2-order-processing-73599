@@ -13,13 +13,13 @@ namespace RabbitMQ
 				HostName = hostname,
 				Port = port,
 				UserName = username,
-				Password = password,
-				DispatchConsumersAsync = true
+				Password = password
 			};
-			_connection = factory.CreateConnection();
+			_connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
 		}
 
-		public IModel CreateModel() => _connection.CreateModel();
+		public IChannel CreateChannelAsync() =>
+			_connection.CreateChannelAsync().GetAwaiter().GetResult();
 
 		public void Dispose() => _connection?.Dispose();
 	}

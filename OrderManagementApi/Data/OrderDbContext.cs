@@ -16,14 +16,20 @@ namespace OrderManagementApi.Data
 		{
 			modelBuilder.Entity<Order>()
 				.HasMany(o => o.Items)
-				.WithOne() // Assuming OrderItem doesn't have a direct navigation property back to Order
+				.WithOne(oi => oi.Order)
 				.HasForeignKey(oi => oi.OrderId);
+
+			modelBuilder.Entity<Order>()
+				.Property(o => o.TotalAmount)
+				.HasPrecision(18, 2);
 
 			modelBuilder.Entity<OrderItem>()
 				.HasKey(oi => oi.Id);
 
-			// Seed data if necessary
-			// modelBuilder.Entity<Product>().HasData(...);
+			modelBuilder.Entity<OrderItem>()
+				.Property(oi => oi.Price)
+				.HasPrecision(18, 2);
 		}
+
 	}
 }
