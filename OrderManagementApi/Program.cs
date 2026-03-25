@@ -1,10 +1,11 @@
+using System.Reflection;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using OrderManagementApi.Data;
 using OrderManagementApi.RabbitMQ;
 using RabbitMQ;
 using Serilog;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,10 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 // MediatR
 builder.Services.AddMediatR(cfg =>
 	cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+builder.Services.AddAutoMapper(cfg => {
+	cfg.AddMaps(typeof(Program).Assembly);
+});
 
 // RabbitMQ
 builder.Services.AddSingleton<IRabbitMQConnection>(sp =>

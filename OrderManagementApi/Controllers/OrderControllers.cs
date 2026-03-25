@@ -20,5 +20,17 @@ namespace OrderManagementApi.Controllers
 
 		[HttpGet("{id}")]
 		public async Task<IActionResult> GetOrder(Guid id) => Ok(await _mediator.Send(new GetOrderByIdQuery(id)));
+
+		[HttpGet]
+		public async Task<IActionResult> GetOrders()
+			=> Ok(await _mediator.Send(new GetOrdersQuery()));
+
+		[HttpGet("{id}/status")]
+		public async Task<IActionResult> GetOrderStatus(Guid id)
+		{
+			var status = await _mediator.Send(new GetOrderStatusQuery(id));
+			if (status == null) return NotFound();
+			return Ok(new { status });
+		}
 	}
 }
