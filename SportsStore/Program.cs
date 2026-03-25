@@ -31,7 +31,13 @@ try {
     // Register Stripe payment service
     builder.Services.AddScoped<IStripePaymentService, StripePaymentService>();
 
-    builder.Services.AddRazorPages();
+	builder.Services.AddHttpClient<IOrderApiClient, OrderApiClient>(client =>
+	{
+		client.BaseAddress = new Uri(builder.Configuration["OrderManagementApi:BaseUrl"]
+			?? "http://localhost:5000");
+	});
+
+	builder.Services.AddRazorPages();
     builder.Services.AddDistributedMemoryCache();
     builder.Services.AddSession();
     builder.Services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
