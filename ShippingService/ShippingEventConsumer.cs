@@ -48,6 +48,7 @@ namespace ShippingService
 					_logger.LogInformation("Shipment created for Order {OrderId}. Tracking: {TrackingNumber}",
 						paymentResult.OrderId, trackingNumber);
 
+					await Task.Delay(5000); // visible in dashboard
 					await _publisher.Publish(new ShippingCreated(
 						paymentResult.OrderId, trackingNumber, estimatedDelivery));
 				}

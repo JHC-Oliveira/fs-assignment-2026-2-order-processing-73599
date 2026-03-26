@@ -1,53 +1,236 @@
 ﻿@page
 @model CartModel
 
-<h2>Your cart</h2>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Quantity</th>
-            <th>Item</th>
-            <th class="text-right">Price</th>
-            <th class="text-right">Subtotal</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var line in Model?.Cart?.Lines ?? Enumerable.Empty<CartLine>()) {
-            <tr>
-                <td class="text-center">@line.Quantity</td>
-                <td class="text-left">@line.Product.Name</td>
-                <td class="text-right">@line.Product.Price.ToString("c")</td>
-                <td class="text-right">
-                    @((line.Quantity * line.Product.Price).ToString("c"))
-                </td>
-                <td class="text-center">
-                    <form asp-page-handler="Remove" method="post">
-                        <input type="hidden" name="ProductID"
-                               value="@line.Product.ProductID" />
-                        <input type="hidden" name="returnUrl"
-                               value="@Model?.ReturnUrl" />
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            Remove
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3" class="text-right">Total:</td>
-            <td class="text-right">
-                @Model?.Cart?.ComputeTotalValue().ToString("c")
-            </td>
-        </tr>
-    </tfoot>
-</table>
+<style>
+    .cart-wrapper {
+        max-width: 860px;
+        margin: 0 auto;
+    }
 
-<div class="text-center">
-    <a class="btn btn-primary" href="@Model?.ReturnUrl">Continue shopping</a>
-    <a class="btn btn-primary" asp-action="Checkout" asp-controller="Order">
-        Checkout
-    </a>
+    .cart-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #1a1a2e;
+        margin-bottom: 20px;
+    }
+
+        .cart-title span {
+            color: #e94560;
+        }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    }
+
+        .cart-table thead tr {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .cart-table thead th {
+            padding: 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .cart-table tbody tr {
+            border-bottom: 1px solid #f3f4f6;
+            transition: background 0.15s;
+        }
+
+            .cart-table tbody tr:hover {
+                background: #f9fafb;
+            }
+
+        .cart-table tbody td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: #374151;
+            vertical-align: middle;
+        }
+
+        .cart-table tfoot tr {
+            background: #f9fafb;
+        }
+
+        .cart-table tfoot td {
+            padding: 14px 16px;
+            font-size: 15px;
+            font-weight: 800;
+            color: #1a1a2e;
+        }
+
+    .qty-badge {
+        background: #ede9fe;
+        color: #5b21b6;
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 3px 10px;
+        font-size: 13px;
+    }
+
+    .product-name {
+        font-weight: 600;
+        color: #1a1a2e;
+    }
+
+    .price-text {
+        font-weight: 600;
+        color: #374151;
+    }
+
+    .subtotal-text {
+        font-weight: 700;
+        color: #e94560;
+    }
+
+    .remove-btn {
+        background: #fee2e2;
+        color: #991b1b;
+        border: none;
+        border-radius: 6px;
+        padding: 5px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+        .remove-btn:hover {
+            background: #e94560;
+            color: #fff;
+        }
+
+    .empty-cart {
+        text-align: center;
+        padding: 60px 20px;
+        color: #9ca3af;
+    }
+
+        .empty-cart .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-cart p {
+            font-size: 16px;
+        }
+
+    .cart-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .btn-continue {
+        background: #f3f4f6;
+        color: #374151;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+        .btn-continue:hover {
+            background: #e5e7eb;
+            color: #1a1a2e;
+        }
+
+    .btn-checkout {
+        background: #e94560;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 28px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .btn-checkout:hover {
+            background: #c73652;
+            color: #fff;
+        }
+
+    .total-row td {
+        border-top: 2px solid #e5e7eb !important;
+    }
+</style>
+
+<div class="cart-wrapper">
+    <div class="cart-title">🛒 Your Cart <span>(@(Model?.Cart?.Lines.Count() ?? 0) items)</span></div>
+
+    @if (!(Model?.Cart?.Lines.Any() ?? false))
+    {
+        <div class="empty-cart">
+            <div class="icon">🛍️</div>
+            <p>Your cart is empty</p>
+            <a href="/" class="btn-checkout" style="display:inline-block; margin-top:12px;">Start Shopping</a>
+        </div>
+    }
+    else
+    {
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Qty</th>
+                    <th>Product</th>
+                    <th style="text-align:right">Price</th>
+                    <th style="text-align:right">Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model?.Cart?.Lines ?? Enumerable.Empty<CartLine>())
+                {
+                    <tr>
+                        <td><span class="qty-badge">×@line.Quantity</span></td>
+                        <td><span class="product-name">@line.Product.Name</span></td>
+                        <td style="text-align:right"><span class="price-text">@line.Product.Price.ToString("c")</span></td>
+                        <td style="text-align:right"><span class="subtotal-text">@((line.Quantity * line.Product.Price).ToString("c"))</span></td>
+                        <td style="text-align:center">
+                            <form asp-page-handler="Remove" method="post" style="margin:0">
+                                <input type="hidden" name="ProductID" value="@line.Product.ProductID" />
+                                <input type="hidden" name="returnUrl" value="@Model?.ReturnUrl" />
+                                <button type="submit" class="remove-btn">✕ Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="3" style="text-align:right; color:#6b7280; font-size:13px; font-weight:600;">ORDER TOTAL</td>
+                    <td style="text-align:right; font-size:20px; color:#e94560;">
+                        @Model?.Cart?.ComputeTotalValue().ToString("c")
+                    </td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="cart-actions">
+            <a class="btn-continue" href="@Model?.ReturnUrl">← Continue Shopping</a>
+            <a class="btn-checkout" asp-action="Checkout" asp-controller="Order">
+                Checkout →
+            </a>
+        </div>
+    }
 </div>
