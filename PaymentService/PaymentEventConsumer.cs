@@ -52,7 +52,8 @@ namespace PaymentService
 						_logger.LogInformation("Payment successful for Order {OrderId}", inventoryResult.OrderId);
 					else
 						_logger.LogWarning("Payment failed for Order {OrderId}: {Reason}", inventoryResult.OrderId, reason);
-
+					
+					await Task.Delay(5000); // visible in dashboard
 					await _publisher.Publish(new PaymentProcessed(
 						inventoryResult.OrderId, isSuccess, transactionId, reason));
 				}

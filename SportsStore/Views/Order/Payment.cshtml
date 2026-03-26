@@ -1,37 +1,184 @@
-@model Order
+﻿@model Order
 
-<h2>Payment</h2>
-<p>Enter your card details to complete the order.</p>
+<style>
+    .payment-wrapper {
+        max-width: 480px;
+        margin: 0 auto;
+    }
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card p-4">
-            <h5>Order Summary</h5>
-            <p><strong>Customer:</strong> @Model.Name</p>
-            <p><strong>Total:</strong> @ViewBag.OrderTotal.ToString("C")</p>
-            <hr />
+    .payment-header {
+        margin-bottom: 24px;
+        text-align: center;
+    }
 
-            <div id="payment-message" class="text-danger mb-3" style="display:none;"></div>
+        .payment-header h4 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin: 0;
+        }
 
-            <div id="payment-element" class="mb-3">
-                <!-- Stripe injects the card UI here -->
-            </div>
+        .payment-header p {
+            font-size: 13px;
+            color: #9ca3af;
+            margin: 4px 0 0;
+        }
 
-            <button id="pay-button" class="btn btn-primary w-100">Pay Now</button>
-            <a asp-action="PaymentCancelled" class="btn btn-outline-secondary w-100 mt-2">Cancel</a>
+    .payment-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+        padding: 24px;
+        margin-bottom: 16px;
+    }
+
+    .section-title {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #9ca3af;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #f3f4f6;
+        }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 14px;
+        color: #374151;
+    }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row .label {
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .summary-row .value {
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .summary-row.total .value {
+            font-size: 20px;
+            color: #e94560;
+        }
+
+    #payment-message {
+        background: #fee2e2;
+        color: #991b1b;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        margin-bottom: 14px;
+    }
+
+    #payment-element {
+        margin-bottom: 20px;
+    }
+
+    .pay-btn {
+        width: 100%;
+        background: #e94560;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+        .pay-btn:hover {
+            background: #c73652;
+        }
+
+        .pay-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+    .cancel-btn {
+        display: block;
+        text-align: center;
+        margin-top: 12px;
+        font-size: 13px;
+        color: #9ca3af;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+        .cancel-btn:hover {
+            color: #e94560;
+        }
+
+    .secure-note {
+        text-align: center;
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 16px;
+    }
+</style>
+
+<div class="payment-wrapper">
+    <div class="payment-header">
+        <h4>💳 Secure Payment</h4>
+        <p>Your payment is encrypted and secure</p>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="payment-card">
+        <div class="section-title">🧾 Order Summary</div>
+        <div class="summary-row">
+            <span class="label">Customer</span>
+            <span class="value">@Model.Name</span>
+        </div>
+        <div class="summary-row">
+            <span class="label">Destination</span>
+            <span class="value">@Model.City, @Model.Country</span>
+        </div>
+        <div class="summary-row total">
+            <span class="label">Total Due</span>
+            <span class="value">@ViewBag.OrderTotal.ToString("C")</span>
         </div>
     </div>
+
+    <!-- Payment Form -->
+    <div class="payment-card">
+        <div class="section-title">💳 Card Details</div>
+
+        <div id="payment-message" style="display:none;"></div>
+        <div id="payment-element" class="mb-3"></div>
+
+        <button id="pay-button" class="pay-btn">Pay @ViewBag.OrderTotal.ToString("C") →</button>
+        <a asp-action="PaymentCancelled" class="cancel-btn">✕ Cancel and go back</a>
+    </div>
+
+    <div class="secure-note">🔒 Powered by Stripe · SSL Encrypted</div>
 </div>
 
 @section Scripts {
-    <!-- Stripe.js � loaded from Stripe CDN, never self-hosted -->
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         const stripe = Stripe('@ViewBag.StripePublishableKey');
-
         const elements = stripe.elements({ clientSecret: '@ViewBag.ClientSecret' });
-
-        // Stripe Payment Element � handles card, wallet, etc.
         const paymentElement = elements.create('payment');
         paymentElement.mount('#payment-element');
 
@@ -46,12 +193,10 @@
             const { error } = await stripe.confirmPayment({
                 elements,
                 confirmParams: {
-                    // Stripe redirects here after payment attempt
                     return_url: window.location.origin + '/Order/PaymentResult?paymentIntentId=@(ViewBag.ClientSecret.ToString().Split("_secret_")[0])'
                 }
             });
 
-            // Only reached if confirmPayment fails immediately (e.g. network error)
             if (error) {
                 messageDiv.textContent = error.message;
                 messageDiv.style.display = 'block';

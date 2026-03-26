@@ -72,6 +72,7 @@ namespace InventoryService
 					_logger.LogWarning("Inventory failed for Order {OrderId}: {Reason}", order.OrderId, reason);
 				}
 
+				await Task.Delay(5000); // visible in dashboard
 				await _publisher.Publish(new InventoryCheckCompleted(order.OrderId, isSuccess, reason));
 				await _channel.BasicAckAsync(ea.DeliveryTag, false);
 			};

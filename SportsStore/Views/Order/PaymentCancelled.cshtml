@@ -1,6 +1,82 @@
-<div class="text-center">
-    <h2>Payment Cancelled</h2>
-    <p>You cancelled the payment. Your order has not been placed and no charge was made.</p>
-    <a class="btn btn-primary" asp-action="Checkout">Return to Checkout</a>
-    <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Return to Store</a>
+﻿<style>
+    .status-wrapper {
+        max-width: 440px;
+        margin: 60px auto;
+        text-align: center;
+    }
+
+    .status-icon {
+        font-size: 72px;
+        margin-bottom: 16px;
+    }
+
+    .status-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: #1a1a2e;
+        margin: 0 0 8px;
+    }
+
+    .status-msg {
+        font-size: 14px;
+        color: #9ca3af;
+        line-height: 1.6;
+        margin-bottom: 28px;
+    }
+
+    .status-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+        padding: 28px;
+        margin-bottom: 20px;
+    }
+
+    .btn-primary-custom {
+        display: inline-block;
+        background: #1a1a2e;
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 28px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        margin: 0 6px;
+        transition: background 0.2s;
+    }
+
+        .btn-primary-custom:hover {
+            background: #e94560;
+            color: #fff;
+        }
+
+    .btn-ghost {
+        display: inline-block;
+        background: #f3f4f6;
+        color: #374151;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 28px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        margin: 0 6px;
+        transition: background 0.2s;
+    }
+
+        .btn-ghost:hover {
+            background: #e5e7eb;
+            color: #1a1a2e;
+        }
+</style>
+
+<div class="status-wrapper">
+    <div class="status-icon">🚫</div>
+    <div class="status-card">
+        <h4 class="status-title">Payment Cancelled</h4>
+        <p class="status-msg">You cancelled the payment.<br />Your order has <strong>not</strong> been placed and no charge was made.</p>
+        <a asp-action="Checkout" class="btn-primary-custom">← Back to Checkout</a>
+        <a asp-controller="Home" asp-action="Index" class="btn-ghost">Return to Store</a>
+    </div>
 </div>

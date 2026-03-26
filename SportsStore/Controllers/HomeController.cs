@@ -5,7 +5,7 @@ using SportsStore.Models.ViewModels;
 namespace SportsStore.Controllers {
     public class HomeController : Controller {
         private IStoreRepository repository;
-        public int PageSize = 4;
+        public int PageSize = 100;
 
         public HomeController(IStoreRepository repo) {
             repository = repo;
