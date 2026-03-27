@@ -1,0 +1,215 @@
+﻿@page
+@model SportsStore.Pages.OrderTrackingModel
+
+<style>
+    .tracking-wrapper {
+        max-width: 620px;
+        margin: 40px auto;
+    }
+
+    .tracking-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: #1a1a2e;
+        margin-bottom: 24px;
+    }
+
+    .tracking-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        padding: 28px;
+        margin-bottom: 20px;
+    }
+
+    .timeline {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .timeline li {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+            .timeline li:last-child {
+                border-bottom: none;
+            }
+
+    .tl-icon {
+        font-size: 22px;
+        min-width: 28px;
+        text-align: center;
+    }
+
+    .tl-label {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1a2e;
+    }
+
+    .tl-sub {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 2px;
+    }
+
+    .step-active .tl-label {
+        color: #059669;
+    }
+
+    .step-failed .tl-label {
+        color: #dc2626;
+    }
+
+    .search-form {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        margin-bottom: 28px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-end;
+    }
+
+        .search-form label {
+            font-size: 13px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .search-form input {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 14px;
+            width: 320px;
+        }
+
+    .btn-search {
+        background: #1a1a2e;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 9px 22px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-top: 12px;
+    }
+
+        .items-table th {
+            text-align: left;
+            padding: 6px 8px;
+            color: #6b7280;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .items-table td {
+            padding: 8px;
+            border-bottom: 1px solid #f9fafb;
+        }
+</style>
+
+<div class="tracking-wrapper">
+    <h2 class="tracking-title">🔍 Track My Order</h2>
+
+    <form method="get" class="search-form">
+        <div>
+            <label>Order ID</label>
+            <input type="text" name="orderId" value="@Model.OrderId" placeholder="Paste your Order ID" />
+        </div>
+        <button type="submit" class="btn-search">Track</button>
+    </form>
+
+    @if (Model.Order != null)
+    {
+        var status = Model.Order.Status;
+        var steps = new[]
+        {
+        new { Key = "Submitted",         Icon = "📋", Label = "Order Submitted" },
+        new { Key = "InventoryPending",  Icon = "📦", Label = "Checking Inventory" },
+        new { Key = "InventoryConfirmed",Icon = "✅", Label = "Inventory Confirmed" },
+        new { Key = "PaymentPending",    Icon = "💳", Label = "Processing Payment" },
+        new { Key = "PaymentApproved",   Icon = "✅", Label = "Payment Approved" },
+        new { Key = "ShippingPending",   Icon = "🚚", Label = "Arranging Shipment" },
+        new { Key = "ShippingCreated",   Icon = "📬", Label = "Shipment Created" },
+        new { Key = "Completed",         Icon = "🎉", Label = "Order Completed" },
+        };
+
+        var failedStatuses = new[] { "InventoryFailed", "PaymentFailed", "ShippingFailed", "Failed" };
+        var statusOrder = steps.Select(s => s.Key).ToList();
+        var currentIndex = statusOrder.IndexOf(status);
+        var isFailed = failedStatuses.Contains(status);
+
+        <div class="tracking-card">
+            <p style="font-size:13px;color:#9ca3af;">Order ID: @Model.Order.Id</p>
+            <div style="display:flex;justify-content:space-between;margin-bottom:16px;">
+                <span style="font-size:20px;font-weight:800;">€@Model.Order.TotalAmount.ToString("F2")</span>
+                <span style="padding:6px 16px;border-radius:20px;font-size:13px;font-weight:700;
+                        background:@(isFailed ? "#fee2e2" : status == "Completed" ? "#d1fae5" : "#fef3c7");
+                        color:@(isFailed ? "#991b1b" : status == "Completed" ? "#065f46" : "#92400e");">@status</span>
+            </div>
+
+            @if (isFailed)
+            {
+                <div style="background:#fee2e2;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;color:#991b1b;">
+                    ⚠️ @(!string.IsNullOrEmpty(Model.Order.FailureReason) ? Model.Order.FailureReason : "Order could not be completed. Please contact support.")
+                </div>
+            }
+
+            <ul class="timeline">
+                @foreach (var step in steps)
+                {
+                    var stepIndex = statusOrder.IndexOf(step.Key);
+                    var isDone = !isFailed && currentIndex >= stepIndex;
+                    var isCurrent = step.Key == status;
+                    var cssClass = isFailed && isCurrent ? "step-failed" : isDone ? "step-active" : "";
+                    <li class="@cssClass">
+                        <span class="tl-icon">@(isDone ? "✅" : isFailed && isCurrent ? "❌" : "⏳")</span>
+                        <div>
+                            <div class="tl-label">@step.Label</div>
+                            @if (isCurrent)
+                            {
+                                <div class="tl-sub">Current status</div>
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+
+            @if (Model.Order.Items?.Any() == true)
+            {
+                <h6 style="margin-top:20px;font-size:12px;color:#6b7280;font-weight:700;">ORDER ITEMS</h6>
+                <table class="items-table">
+                    <thead><tr><th>Product</th><th>Qty</th><th>Price</th></tr></thead>
+                    <tbody>
+                        @foreach (var item in Model.Order.Items)
+                        {
+                            <tr><td>@item.ProductName</td><td>@item.Quantity</td><td>€@item.Price.ToString("F2")</td></tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(Model.OrderId))
+    {
+        <div style="text-align:center;padding:40px;color:#9ca3af;">
+            <div style="font-size:50px;">🔎</div>
+            <p>Order not found. Please check your Order ID.</p>
+        </div>
+    }
+</div>

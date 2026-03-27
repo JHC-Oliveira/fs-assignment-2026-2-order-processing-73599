@@ -1,0 +1,168 @@
+﻿@page
+@model SportsStore.Pages.MyOrdersModel
+
+<style>
+    .orders-wrapper {
+        max-width: 800px;
+        margin: 40px auto;
+    }
+
+    .orders-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: #1a1a2e;
+        margin-bottom: 24px;
+    }
+
+    .order-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .order-info h5 {
+        margin: 0 0 4px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #1a1a2e;
+    }
+
+    .order-info span {
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+    .order-amount {
+        font-size: 18px;
+        font-weight: 800;
+        color: #1a1a2e;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-left: 12px;
+    }
+
+    .status-Completed {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-Failed {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .status-Submitted, .status-PaymentPending, .status-InventoryPending, .status-ShippingPending {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .btn-track {
+        background: #1a1a2e;
+        color: #fff;
+        border-radius: 8px;
+        padding: 8px 18px;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+        .btn-track:hover {
+            background: #e94560;
+            color: #fff;
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 0;
+        color: #9ca3af;
+    }
+
+    .customer-form {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+        margin-bottom: 28px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-end;
+    }
+
+        .customer-form label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .customer-form input {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 14px;
+            width: 320px;
+        }
+
+    .btn-search {
+        background: #1a1a2e;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 9px 22px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+</style>
+
+<div class="orders-wrapper">
+    <h2 class="orders-title">📋 My Orders</h2>
+
+    <form method="get" class="customer-form">
+        <div>
+            <label>Customer ID</label>
+            <input type="text" name="customerId" value="@Model.CustomerId" placeholder="Enter your Customer ID" />
+        </div>
+        <button type="submit" class="btn-search">View Orders</button>
+    </form>
+
+    @if (!string.IsNullOrEmpty(Model.CustomerId))
+    {
+        @if (Model.Orders == null || !Model.Orders.Any())
+        {
+            <div class="empty-state">
+                <div style="font-size:60px;">📭</div>
+                <p>No orders found for this customer.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var order in Model.Orders)
+            {
+                <div class="order-card">
+                    <div class="order-info">
+                        <h5>Order #@order.Id.ToString()[..8].ToUpper()</h5>
+                        <span>@order.CreatedAt.ToString("dd MMM yyyy, HH:mm")</span>
+                        <span class="status-badge status-@order.Status">@order.Status</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:20px;">
+                        <span class="order-amount">€@order.TotalAmount.ToString("F2")</span>
+                        <a href="/OrderTracking?orderId=@order.Id" class="btn-track">Track →</a>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>
