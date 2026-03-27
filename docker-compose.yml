@@ -99,6 +99,7 @@ services:
       Stripe__PublishableKey: "${STRIPE_PUBLISHABLE_KEY}"
       Stripe__SecretKey: "${STRIPE_SECRET_KEY}"
       ConnectionStrings__SportsStoreConnection: "Server=sqlserver;Database=SportsStore;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;"
+      ConnectionStrings__IdentityConnection: "Server=sqlserver;Database=Identity;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;"
     depends_on:
       sqlserver:
         condition: service_healthy
