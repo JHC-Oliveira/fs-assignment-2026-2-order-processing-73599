@@ -52,11 +52,11 @@ const OrderDashboard = () => {
     const completed = orders.filter(o => o.status === 'Completed').length;
     const failed = orders.filter(o => o.status === 'Failed').length;
 
-    const filteredOrders = orders.filter(o => {
-        if (filter === 'completed') return o.status === 'Completed';
-        if (filter === 'failed') return o.status === 'Failed';
-        return true;
-    });
+    const filteredOrders = orders.filter(function(o) {
+            if (filter === 'completed') return o.status === 'Completed';
+            if (filter === 'failed') return o.status === 'Failed';
+            return true;
+        });
 
     const cards = [
         { key: 'all', label: 'Total Orders', value: orders.length, bg: '#fff', color: '#111827', border: '#3b82f6' },
