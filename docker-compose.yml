@@ -98,8 +98,8 @@ services:
       OrderApi__BaseUrl: "http://ordermanagementapi:8080"
       Stripe__PublishableKey: "${STRIPE_PUBLISHABLE_KEY}"
       Stripe__SecretKey: "${STRIPE_SECRET_KEY}"
-      ConnectionStrings__SportsStoreConnection: "Server=sqlserver;Database=SportsStore;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;"
-      ConnectionStrings__IdentityConnection: "Server=sqlserver;Database=Identity;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;"
+      ConnectionStrings__SportsStoreConnection: "Server=sqlserver,1433;Database=SportsStore;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;Encrypt=False;"
+      ConnectionStrings__IdentityConnection: "Server=sqlserver,1433;Database=Identity;User Id=sa;Password=YourStrongPassword123!;TrustServerCertificate=True;Encrypt=False;"
     depends_on:
       sqlserver:
         condition: service_healthy
