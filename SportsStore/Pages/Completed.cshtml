@@ -1,14 +1,109 @@
 ﻿@page
 
-<div class="text-center">
-    <h2>Thanks!</h2>
-    <p>Thanks for placing order #@OrderId</p>
-    <p>We'll ship your goods as soon as possible.</p>
-    <a class="btn btn-primary" asp-controller="Home">Return to Store</a>
+<style>
+    .completed-wrapper {
+        max-width: 480px;
+        margin: 60px auto;
+        text-align: center;
+    }
+
+    .completed-icon {
+        font-size: 80px;
+        margin-bottom: 16px;
+    }
+
+    .completed-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+        padding: 32px 28px;
+    }
+
+    .completed-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: #1a1a2e;
+        margin: 0 0 8px;
+    }
+
+    .completed-msg {
+        font-size: 14px;
+        color: #9ca3af;
+        line-height: 1.6;
+        margin-bottom: 24px;
+    }
+
+    .order-id-badge {
+        display: inline-block;
+        background: #ede9fe;
+        color: #5b21b6;
+        border-radius: 8px;
+        padding: 6px 16px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 28px;
+        letter-spacing: 0.5px;
+    }
+
+    .steps {
+        background: #f9fafb;
+        border-radius: 10px;
+        padding: 16px;
+        margin-bottom: 28px;
+        text-align: left;
+    }
+
+    .step {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0;
+        font-size: 13px;
+        color: #374151;
+    }
+
+        .step .dot {
+            font-size: 16px;
+        }
+
+    .btn-store {
+        display: inline-block;
+        background: #1a1a2e;
+        color: #fff;
+        border-radius: 10px;
+        padding: 12px 32px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.2s;
+    }
+
+        .btn-store:hover {
+            background: #e94560;
+            color: #fff;
+        }
+</style>
+
+<div class="completed-wrapper">
+    <div class="completed-icon">🎉</div>
+    <div class="completed-card">
+        <h4 class="completed-title">Order Confirmed!</h4>
+        <p class="completed-msg">Thank you for your purchase. Your order has been received and is now being processed.</p>
+
+        <div class="order-id-badge">Order #@OrderId</div>
+
+        <div class="steps">
+            <div class="step"><span class="dot">✅</span> Order received</div>
+            <div class="step"><span class="dot">📦</span> Inventory being checked</div>
+            <div class="step"><span class="dot">💳</span> Payment being processed</div>
+            <div class="step"><span class="dot">🚚</span> Shipping being arranged</div>
+        </div>
+
+        <a href="/" class="btn-store">← Continue Shopping</a>
+    </div>
 </div>
 
 @functions {
-
     [BindProperty(SupportsGet = true)]
     public string? OrderId { get; set; }
 }
