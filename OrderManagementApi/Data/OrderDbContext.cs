@@ -37,11 +37,8 @@ namespace OrderManagementApi.Data
                 .Property(p => p.Price)
                 .HasPrecision(18, 2);
 
-            modelBuilder.Entity<Customer>()
-                .HasMany(c => c.Orders)
-                .WithOne()
-                .HasForeignKey(o => o.CustomerId)
-                .OnDelete(DeleteBehavior.NoAction);
+            // No FK from Customer to Order — CustomerId on Order is a loose GUID reference
+            modelBuilder.Entity<Customer>().HasKey(c => c.Id);
 
             modelBuilder.Entity<InventoryRecord>()
                 .HasOne(i => i.Order)
